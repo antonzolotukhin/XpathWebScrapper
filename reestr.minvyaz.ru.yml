@@ -1,0 +1,12 @@
+baseurl: "https://reestr.minsvyaz.ru/"
+starturl: "/reestr/?PAGEN_1=1&show_count=100"
+data:
+        rows:    '//div[@class="line"]'
+        columns:
+          no: 'div[@class="num"]/text()'
+          name: 'div[@class="name"]/a/text()'
+          class: 'div[@class="class"]'
+          date: 'div[@class="date"]/text()'
+          site: 'div[@class="status"]/a/@href'
+        links:
+          - '//a[contains(text(), ">")]/@href'

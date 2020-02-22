@@ -1,0 +1,11 @@
+baseurl: "https://phones.tomsk.gov.ru/"
+starturl: "/phonebook/gubernator?people_id=4"
+data:
+        rows:    "//div[@class=\"wrap\"]/table[@class=\"table\"]/tbody/tr"
+        columns:
+                name: "td[2]/text()"
+                position: "td[3]/text()"
+                addr: "td[4]/text()"
+                phone: "td[5]/text()"
+        links:
+                - "//div[@class=\"list-links\"]/ul/li/a/@href"
