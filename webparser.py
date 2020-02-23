@@ -81,6 +81,7 @@ class Scrapper:
         self.uri = ''
         self.data = [] # ???
         self.parser = parser
+        self.fetchedlinks = []
 
     def get(self, uri:str):
         self.parser.getTree(uri)
@@ -88,7 +89,9 @@ class Scrapper:
 
     def crawl(self,uri:str):
         self.uri = uri
-        self.get(self.baseurl + self.uri)
-        for l in self.parser.pattern.links:
-            for link in self.parser.getXPathElement(l):
-                self.crawl(link)
+        if self.uri not in self.fetchedlinks:
+            self.get(self.baseurl + self.uri)
+            self.fetchedlinks.append(self.uri)
+            for l in self.parser.pattern.links:
+                for link in self.parser.getXPathElement(l):
+                    self.crawl(link)

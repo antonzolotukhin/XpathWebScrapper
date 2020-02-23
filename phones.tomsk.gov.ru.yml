@@ -1,5 +1,5 @@
 baseurl: "https://phones.tomsk.gov.ru/"
-starturl: "/phonebook/gubernator?people_id=4"
+starturl: "/phonebook/index"
 data:
         rows:    "//div[@class=\"wrap\"]/table[@class=\"table\"]/tbody/tr"
         columns:
