@@ -1,0 +1,32 @@
+language: python
+python:
+        - "3.6"
+        - "3.7"
+        - "3.8"
+sudo: required
+
+branches:
+        only:
+                - develop
+                - masters
+before_install:
+        - pip install -r requirements.txt
+
+script:
+  - printenv
+  - set -e
+  - python setup.py pytest
+  - python setup.py bdist_wheel
+
+deploy:
+  - provider: script
+    script: echo "Successful build at master: ${TRAVIS_BUILD_NUMBER} `python -V`"
+      -
+    on:
+      branch: develop
+    skip_cleanup: true
+  - provider: script
+    script: echo "Successful build at develop: ${TRAVIS_BUILD_NUMBER} `python -V`"
+    on:
+      branch: master
+    skip_cleanup: true
