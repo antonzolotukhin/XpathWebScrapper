@@ -1,0 +1,12 @@
+baseurl: "https://en.wikipedia.org"
+starturl: "/wiki/Timeline_of_wars"
+data:
+        rows:    "//table[contains(@class,\"wikitable\")]/tbody/tr[count(th)=0]"
+        columns:
+                start: "td[1]"
+                finish: "td[2]"
+                name: "td[3]"
+                vicpart: "td[4]"
+                defpart: "td[5]"
+        links:
+                - "//div[@id=\"bodyContent\"]/div[@id=\"mw-content-text\"]/div/ul/li/a[@class=\"mw-redirect\"]/@href"
