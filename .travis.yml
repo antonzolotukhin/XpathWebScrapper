@@ -1,30 +1,27 @@
 language: python
 python:
-        - "3.6"
-        - "3.7"
-        - "3.8"
-
+- '3.6'
+- '3.7'
+- '3.8'
+os: linux
 branches:
-        only:
-                - develop
-                - masters
+  only:
+  - develop
+  - masters
 install:
-  - pip install -r requirements-travis.txt
-
+- pip install -r requirements-travis.txt
 script:
-  - printenv
-  - set -e
-  - python setup.py pytest
-  - python setup.py bdist_wheel
-
+- printenv
+- set -e
+- python setup.py pytest
 deploy:
-  - provider: script
-    script: echo "Successful build at master"
-    on:
-      branch: develop
-    skip_cleanup: true
-  - provider: script
-    script: echo "Successful build at develop"
-    on:
-      branch: master
-    skip_cleanup: true
+- provider: pypi
+  username: __token__
+  password:
+    secure: "IG8+33s0YjzUK1/fP561Cy785dQjWLbLAEZ4QVrSLa7PTF/I1i6aT4SXLQoNaFlin3h3+k0ud2HtXAnlRmgRs3gr7Mfguo9AoZRAw/sUaGOLme8MqUXd6B0zi6i+AlRqPlqmJ8TNOyj3OXBYkbpeGSw1XvPA3ohDq+nCTppJR8sUYIH8DbGHpLExUhkjc0gqLINkn5h2PTIxeOZe8N2lb27Itd7N5zP7E+uc9ahF6CeS8OGqd7Vv0yCvWKl7u+WNsblU4YHIsvbiKyrwvvVVM32p+ZhhXce+avR9noCH1NE8rnlSp9rDw5kqWstepQmPCQvp9E+VH/J0HkbsKhg/Snfwfm8u9E2P/gpYmLLppZA6Nb/VViikZoQVgQMViFLaOfH6zGuyibhNyrgkOjNZun27IVJbdLkC/YbFoLI6aWmDobXx45XtgnEWa6Z3JV/pT0AJr/Ra4kYLRudNz1X2xQkBeB9+z89CqNDSvhuPWutov+RREKz0nEvseYkC9UKlByo78lqXTyINCXIIOKFH69b3xp0lv+k9bKY2fYrHo65IT+JKcS3969/le+V6JHfDcaf53fbOfuRxqXt84xPrUmfzTdfozFjzoH4tfESh1tBOrnBX9cHX++aTwxnl5JWD4Ih5/pr8o+uooEHnUW+MsWN03i8S8HsnC168mOihm8Q="
+  distributions: sdist bdist_wheel
+  on:
+    all_branches: true
+  cleanup: false
+after_script:
+- echo "Deploy to PyPI finished."
