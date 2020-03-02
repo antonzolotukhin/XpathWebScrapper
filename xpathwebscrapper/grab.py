@@ -19,13 +19,27 @@ def main():
     parser.add_argument("xlsx", help="result.xlsx", type=str)
     args = parser.parse_args()
 
-    yml = open(args.yml, mode="r", encoding="utf-8-sig").read()
+    df = scrap(args.yml)
+
+    print(df)
+
+    with pd.ExcelWriter(args.xlsx, engine='xlsxwriter') as writer:
+        df.to_excel(writer, sheet_name=args.xlsx, index=False)
+        writer.save()
+        writer.close()
+
+    print('{} elapsed'.format(datetime.now()-start))
+
+
+def scrap(ymlfile: str):
+
+    yml = open(ymlfile, mode="r", encoding="utf-8-sig").read()
     structure = yaml.safe_load(yml)
 
     patt = XpthPattern()
-    patt.setRowXpath(structure.get('data').get('rows'))
-    patt.setXPathDataDict(structure.get('data').get('columns'))
-    patt.setLinks(structure['data']['links'])
+    patt.setRowXpath(structure.get('data',{}).get('rows'))
+    patt.setXPathDataDict(structure.get('data',{}).get('columns',{}))
+    patt.setLinks(structure.get('data',{}).get('links',[]))
 
     par = XpthParser(patt)
 
@@ -36,12 +50,4 @@ def main():
     df = pd.DataFrame(columns=patt.DataColumns(), index=[])
     df = df.append(par.data, ignore_index=True)
 
-    print(df)
-
-    with pd.ExcelWriter(args.xlsx, engine='xlsxwriter') as writer:
-        df.to_excel(writer, sheet_name=args.xlsx, index=False)
-        writer.save()
-        writer.close()
-        #       ---
-
-    print('{} elapsed'.format(datetime.now()-start))
+    return df
