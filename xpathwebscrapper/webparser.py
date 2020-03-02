@@ -102,7 +102,6 @@ class Scrapper:
             url = urlunparse((scheme, netloc, path, params, query, fragment))
             print('construct url', url)
 
-
             self.get(url)
             self.fetchedlinks.append(self.uri)
             for l in self.parser.pattern.links:

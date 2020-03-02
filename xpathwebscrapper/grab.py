@@ -19,7 +19,8 @@ def main():
     parser.add_argument("xlsx", help="result.xlsx", type=str)
     args = parser.parse_args()
 
-    structure = yaml.safe_load(open(args.yml, mode="r", encoding="utf-8-sig").read())
+    yml = open(args.yml, mode="r", encoding="utf-8-sig").read()
+    structure = yaml.safe_load(yml)
 
     patt = XpthPattern()
     patt.setRowXpath(structure.get('data').get('rows'))
