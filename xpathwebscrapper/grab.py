@@ -19,7 +19,7 @@ def main():
     parser.add_argument("xlsx", help="result.xlsx", type=str)
     args = parser.parse_args()
 
-    structure = yaml.safe_load(open(args.yml).read())
+    structure = yaml.safe_load(open(args.yml, mode="r", encoding="utf-8-sig").read())
 
     patt = XpthPattern()
     patt.setRowXpath(structure.get('data').get('rows'))
@@ -28,7 +28,7 @@ def main():
 
     par = XpthParser(patt)
 
-    scrp = Scrapper(structure.get('baseurl'), par)
+    scrp = Scrapper(structure.get('baseurl'), par, query=structure.get('query', {}))
 
     d = scrp.crawl(structure.get('starturl'))
 
