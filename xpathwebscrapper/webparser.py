@@ -3,6 +3,7 @@ from lxml import html
 import requests
 from urllib.parse import urlparse, urlunparse, urljoin, parse_qs, urlencode
 from collections import namedtuple
+from xpathwebscrapper.utils import Config
 
 class XpthPattern:
     def __init__(self):
@@ -35,9 +36,11 @@ class XpthParser:
 
         self.data = []
 
+        self.config = Config.getInstance()
+
     def getTree(self, url: str):
         print('fetching ' + url)
-        response = requests.get(url, verify=False)
+        response = requests.get(url, verify=self.config.args.ssl_no_verify)
         self.tree = html.fromstring(response.content)
 
     def getXPathChild(self, xpath: str, parent: html.HtmlElement):
