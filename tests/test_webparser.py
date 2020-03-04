@@ -1,7 +1,9 @@
+import pytest
 from collections import namedtuple
 from xpathwebscrapper.webparser import XpthPattern,XpthParser
 from xpathwebscrapper.utils import Config
-import pytest
+from lxml import etree, html
+import textwrap
 
 class TestXpthPattern:
 
@@ -42,3 +44,36 @@ class TestXpthPattern:
         patt.setLinks(c.structure.get('data',{}).get('links',[]))
 
         assert patt.links == ["//div[@id=\"bodyContent\"]/div[@id=\"mw-content-text\"]/div/ul/li/a[@class=\"mw-redirect\"]/@href"]
+
+
+
+class TestXpthParser:
+
+    @pytest.mark.httpretty
+    def test_getTree(inittestconfig):
+        par = XpthParser(XpthPattern())
+        par.getTree("https://py.testopedia.org/tree.html")
+        h = b'''<html>\n<body>\n<p>this is test</p>\n</body>\n</html>'''
+
+        assert isinstance(par.tree, html.HtmlElement)
+        assert etree.tostring(par.tree) == h
+
+
+    def test_getXPathChild(inittestconfig):
+
+        par = XpthParser(XpthPattern())
+        h = b'''<html><body><p>p1</p><p>p2</p></body></html>'''
+        t = html.fromstring(h)
+        e = par.getXPathChild('//body/p', t)
+
+        assert len(e) == 2
+        assert etree.tostring(e[0]) == b'<p>p1</p>'
+        assert etree.tostring(e[1]) == b'<p>p2</p>'
+
+    def test_getXPathChildContent(inittestconfig):
+        par = XpthParser(XpthPattern())
+        h = b'''<html><body><p>test1  </p><p>test2<br/>\ntest3</p>   test4</body></html>'''
+        t = html.fromstring(h)
+        e = par.getXPathChildContent('//body', t)
+
+        assert e == 'test1 test2 test3 test4'
