@@ -3,7 +3,6 @@
 
 import pandas as pd
 from datetime import datetime
-import argparse
 from xpathwebscrapper.webparser import *
 from xpathwebscrapper.utils import Config
 import pkg_resources  # part of standart setuptools
@@ -13,13 +12,6 @@ def main():
     start = datetime.now()
 
     c = Config.getInstance()
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("yml", help="site_definition.yml", type=str)
-    parser.add_argument("xlsx", help="result.xlsx", type=str)
-    parser.add_argument("--ssl-no-verify", default=True, action='store_false', help="Turn off SSL verification")
-    parser.parse_args(namespace=c.args)
 
     df = scrap()
 

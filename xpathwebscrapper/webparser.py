@@ -4,6 +4,9 @@ import requests
 from urllib.parse import urlparse, urlunparse, urljoin, parse_qs, urlencode
 from collections import namedtuple
 from xpathwebscrapper.utils import Config
+from xpathwebscrapper.utils import Toolbox as tb
+
+import sys
 
 class XpthPattern:
     def __init__(self):
@@ -38,8 +41,10 @@ class XpthParser:
 
         self.config = Config.getInstance()
 
+        self.log = tb.getLogger()
+
     def getTree(self, url: str):
-        print('fetching ' + url)
+        self.log.info('Fetching: ' + url)
         response = requests.get(url, verify=self.config.args.ssl_no_verify)
         self.tree = html.fromstring(response.content)
 
@@ -75,7 +80,7 @@ class XpthParser:
             if any(data):
                 self.data.append(data)
                 parsed_count += 1
-        print('{} rows parsed.'.format(parsed_count))
+        self.log.info('{} rows parsed.'.format(parsed_count))
 
 
 class Scrapper:
@@ -86,6 +91,8 @@ class Scrapper:
         self.parser = parser
         self.fetchedlinks = []
         self.query = query
+
+        self.log = tb.getLogger()
 
     def get(self, uri: str):
         self.parser.getTree(uri)
@@ -99,11 +106,17 @@ class Scrapper:
             scheme, netloc, path, params, query, fragment = urlparse(url)
 
             qs = parse_qs(query, keep_blank_values=True)
-            qs.update(self.query)
-            query = urlencode(qs, doseq=True)
 
+            self.log.debug('Intial query: {}'.format(str(qs)))
+
+            qs.update(self.query)
+
+            self.log.debug('Modified query: {}'.format(str(qs)))
+
+            query = urlencode(qs, doseq=True)
             url = urlunparse((scheme, netloc, path, params, query, fragment))
-            print('construct url', url)
+            
+            self.log.debug('Result url: {}'.format(url))
 
             self.get(url)
             self.fetchedlinks.append(self.uri)
