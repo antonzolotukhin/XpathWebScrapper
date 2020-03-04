@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 import json
 import httpretty
 import pytest
-
+from xpathwebscrapper.utils import Config
 
 def request_callback_get(request, uri, headers):
     """
@@ -43,3 +43,9 @@ def httpget_mock():
         httpretty.register_uri(method, re.compile(r"https://.+/.*"),
                                body=request_callback_get,
                                content_type="text/html")
+
+@pytest.fixture
+def inittestconfig():
+    c = Config.getInstance()
+    print(c)
+    c.parse_args(['tests/resources/test.yml','tests/resources/test.xlsx'])
