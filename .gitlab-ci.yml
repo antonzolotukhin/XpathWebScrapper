@@ -1,4 +1,4 @@
-image: alpine
+image: python:3-alpine
 
 stages:
   - test
