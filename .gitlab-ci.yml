@@ -1,0 +1,23 @@
+image: alpine
+
+stages:
+  - test
+  - build
+before_script:
+  - export PIP_CACHE_DIR="pip-cache"
+  - pip install -r requirements-travis.txt
+cache:
+  paths:
+    - pip-cache
+test:
+  stage: test
+  script:
+  - set -e
+  - python setup.py test
+build:
+  stage: build
+  script:
+  - python setup.py bdist_wheel
+  artifacts:
+    paths:
+      - build/
