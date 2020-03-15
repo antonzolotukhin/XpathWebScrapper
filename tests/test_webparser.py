@@ -5,7 +5,7 @@ from lxml import etree, html
 
 
 class TestXpthPattern:
-    def test_setXPathDataDict_DataColumns(inittestconfig):
+    def test_setXPathDataDict_DataColumns(self, inittestconfig):
         c = Config.getInstance()
 
         patt = XpthPattern()
@@ -13,7 +13,7 @@ class TestXpthPattern:
 
         assert list(patt.DataColumns()) == ["start", "finish", "name", "vicpart", "defpart"]
 
-    def test_setRowXpath(inittestconfig):
+    def test_setRowXpath(self, inittestconfig):
         c = Config.getInstance()
 
         patt = XpthPattern()
@@ -21,7 +21,7 @@ class TestXpthPattern:
 
         assert patt.row == '//table[contains(@class,"wikitable")]/tbody/tr[count(th)=0]'
 
-    def test_setXPathDataDict_XPathDataDict(inittestconfig):
+    def test_setXPathDataDict_XPathDataDict(self, inittestconfig):
         c = Config.getInstance()
 
         patt = XpthPattern()
@@ -35,7 +35,7 @@ class TestXpthPattern:
             "defpart": "td[5]",
         }
 
-    def test_setLinks(inittestconfig):
+    def test_setLinks(self, inittestconfig):
         c = Config.getInstance()
 
         patt = XpthPattern()
@@ -48,7 +48,7 @@ class TestXpthPattern:
 
 class TestXpthParser:
     @pytest.mark.httpretty
-    def test_getTree(inittestconfig):
+    def test_getTree(self, inittestconfig):
         par = XpthParser(XpthPattern())
         par.getTree("https://py.testopedia.org/tree.html")
         h = b"""<html>\n<body>\n<p>this is test</p>\n</body>\n</html>"""
@@ -56,7 +56,7 @@ class TestXpthParser:
         assert isinstance(par.tree, html.HtmlElement)
         assert etree.tostring(par.tree) == h
 
-    def test_getXPathChild(inittestconfig):
+    def test_getXPathChild(self, inittestconfig):
         par = XpthParser(XpthPattern())
         h = b"""<html><body><p>p1</p><p>p2</p></body></html>"""
         t = html.fromstring(h)
@@ -66,7 +66,7 @@ class TestXpthParser:
         assert etree.tostring(e[0]) == b"<p>p1</p>"
         assert etree.tostring(e[1]) == b"<p>p2</p>"
 
-    def test_getXPathChildContent(inittestconfig):
+    def test_getXPathChildContent(self, inittestconfig):
         par = XpthParser(XpthPattern())
         h = b"""<html><body><p>test1  </p><p>test2<br/>\ntest3</p>   test4</body></html>"""
         t = html.fromstring(h)

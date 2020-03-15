@@ -12,11 +12,15 @@ class Config:
             self._yml = None
             self.argparser = Toolbox.getArgparser()
 
-    def parse_args(self,  args=None):
+    def parse_args(self, args=None):
         """ Можно вызвать как .parse_args(['--ssl_no_verify', 'def.yml', 'out.xlsx'])
             или без аргументов: .parse_args() - тогда аргументы будут взяты из коммандной строки
         """
         self._args = self.argparser.parse_args(args)
+
+    @classmethod
+    def destroyInstance(cls):
+        cls.__instance = None
 
     @property
     def args(self):
@@ -53,7 +57,7 @@ class Toolbox:
 
             cls.lhandler = logging.StreamHandler()
 
-            cls.lformater = logging.Formatter('[%(levelname)s]: %(message)s')
+            cls.lformater = logging.Formatter("[%(levelname)s]: %(message)s")
             cls.lhandler.setFormatter(cls.lformater)
 
             cls.logger.addHandler(cls.lhandler)
@@ -66,8 +70,7 @@ class Toolbox:
             cls.argparser = argparse.ArgumentParser()
             cls.argparser.add_argument("yml", help="site_definition.yml", type=str)
             cls.argparser.add_argument("xlsx", help="result.xlsx", type=str)
-            cls.argparser.add_argument("--ssl-no-verify",
-                                       default=True,
-                                       action='store_false',
-                                       help="Turn off SSL verification")
+            cls.argparser.add_argument(
+                "--ssl-no-verify", default=True, action="store_false", help="Turn off SSL verification"
+            )
         return cls.argparser
