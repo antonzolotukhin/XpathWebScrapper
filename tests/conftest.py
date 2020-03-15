@@ -2,19 +2,18 @@
 import os
 import re
 from urllib.parse import urlparse
-import httpretty
 import pytest
 from xpathwebscrapper.utils import Config
 
 
-def request_callback_get(request, uri, headers):
+def request_callback_get(request, context):
     """
     Берем содержимое ответов на GET-запросы из файлов,
     расположенных по соответствующему пути.
     Взято с devopshq/tfs.
     """
-    code, response = get_from_file(uri)
-    return code, headers, response
+    context.status_code, response = get_from_file(request.url)
+    return response
 
 
 def get_from_file(uri):
@@ -33,15 +32,14 @@ def get_from_file(uri):
     return code, response
 
 
-@pytest.fixture(autouse=True)
-def httpget_mock():
+@pytest.fixture()
+def httpget_mock(requests_mock):
     """
-    Подменяем GET-запросы во всех (autouse=True) тестах
+    Подменяем GET-запросы
     """
-    for method in (httpretty.GET, httpretty.POST, httpretty.PUT, httpretty.PATCH):
-        httpretty.register_uri(
-            method, re.compile(r"https://.+/.*"), body=request_callback_get, content_type="text/html"
-        )
+    for method in ("GET", "POST", "PUT", "PATCH"):
+        requests_mock.register_uri(method, re.compile(r"https://.+/.*"), text=request_callback_get)
+    yield
 
 
 @pytest.fixture()

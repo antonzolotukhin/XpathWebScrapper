@@ -1,4 +1,3 @@
-import pytest
 from xpathwebscrapper.webparser import XpthPattern, XpthParser
 from xpathwebscrapper.utils import Config
 from lxml import etree, html
@@ -47,8 +46,7 @@ class TestXpthPattern:
 
 
 class TestXpthParser:
-    @pytest.mark.httpretty
-    def test_getTree(self, inittestconfig):
+    def test_getTree(self, inittestconfig, httpget_mock):
         par = XpthParser(XpthPattern())
         par.getTree("https://py.testopedia.org/tree.html")
         h = b"""<html>\n<body>\n<p>this is test</p>\n</body>\n</html>"""
