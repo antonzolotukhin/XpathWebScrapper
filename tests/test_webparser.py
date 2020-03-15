@@ -1,9 +1,8 @@
 import pytest
-from collections import namedtuple
-from xpathwebscrapper.webparser import XpthPattern,XpthParser
+from xpathwebscrapper.webparser import XpthPattern, XpthParser
 from xpathwebscrapper.utils import Config
 from lxml import etree, html
-import textwrap
+
 
 class TestXpthPattern:
 
@@ -11,15 +10,15 @@ class TestXpthPattern:
         c = Config.getInstance()
 
         patt = XpthPattern()
-        patt.setXPathDataDict(c.structure.get('data',{}).get('columns',{}))
+        patt.setXPathDataDict(c.structure.get('data', {}).get('columns', {}))
 
-        assert list(patt.DataColumns()) == ['start','finish','name','vicpart','defpart']
+        assert list(patt.DataColumns()) == ['start', 'finish', 'name', 'vicpart', 'defpart']
 
     def test_setRowXpath(inittestconfig):
         c = Config.getInstance()
 
         patt = XpthPattern()
-        patt.setRowXpath(c.structure.get('data',{}).get('rows'))
+        patt.setRowXpath(c.structure.get('data', {}).get('rows'))
 
         assert patt.row == '//table[contains(@class,\"wikitable\")]/tbody/tr[count(th)=0]'
 
@@ -27,7 +26,7 @@ class TestXpthPattern:
         c = Config.getInstance()
 
         patt = XpthPattern()
-        patt.setXPathDataDict(c.structure.get('data',{}).get('columns',{}))
+        patt.setXPathDataDict(c.structure.get('data', {}).get('columns', {}))
 
         assert patt.XPathDataDict() == {
                                         'start': "td[1]",
@@ -41,10 +40,11 @@ class TestXpthPattern:
         c = Config.getInstance()
 
         patt = XpthPattern()
-        patt.setLinks(c.structure.get('data',{}).get('links',[]))
+        patt.setLinks(c.structure.get('data', {}).get('links', []))
 
-        assert patt.links == ["//div[@id=\"bodyContent\"]/div[@id=\"mw-content-text\"]/div/ul/li/a[@class=\"mw-redirect\"]/@href"]
-
+        assert patt.links == ["//div[@id=\"bodyContent\"]" +
+                              "/div[@id=\"mw-content-text\"]" +
+                              "/div/ul/li/a[@class=\"mw-redirect\"]/@href"]
 
 
 class TestXpthParser:
@@ -58,9 +58,7 @@ class TestXpthParser:
         assert isinstance(par.tree, html.HtmlElement)
         assert etree.tostring(par.tree) == h
 
-
     def test_getXPathChild(inittestconfig):
-
         par = XpthParser(XpthPattern())
         h = b'''<html><body><p>p1</p><p>p2</p></body></html>'''
         t = html.fromstring(h)

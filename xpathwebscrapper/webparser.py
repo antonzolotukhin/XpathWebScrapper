@@ -2,11 +2,9 @@ import re
 from lxml import html
 import requests
 from urllib.parse import urlparse, urlunparse, urljoin, parse_qs, urlencode
-from collections import namedtuple
 from xpathwebscrapper.utils import Config
 from xpathwebscrapper.utils import Toolbox as tb
 
-import sys
 
 class XpthPattern:
     def __init__(self):
@@ -84,7 +82,7 @@ class XpthParser:
 
 
 class Scrapper:
-    def __init__(self, baseurl: str, parser: XpthParser, query: dict={}):
+    def __init__(self, baseurl: str, parser: XpthParser, query: dict = {}):
         self.baseurl = baseurl
         self.uri = ''
         self.data = []  # ???
@@ -115,7 +113,7 @@ class Scrapper:
 
             query = urlencode(qs, doseq=True)
             url = urlunparse((scheme, netloc, path, params, query, fragment))
-            
+
             self.log.debug('Result url: {}'.format(url))
 
             self.get(url)

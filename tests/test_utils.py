@@ -1,29 +1,30 @@
-import pytest
 import logging
 import argparse
 from xpathwebscrapper.utils import Config, Toolbox
+
 
 class TestConfig:
     def test_parse_args_req(self):
         c = Config.getInstance()
         print(c)
-        c.parse_args(['foo.yml','bar.xlsx'])
-        assert  c.args.yml == 'foo.yml'
-        assert  c.args.xlsx == 'bar.xlsx'
+        c.parse_args(['foo.yml', 'bar.xlsx'])
+        assert c.args.yml == 'foo.yml'
+        assert c.args.xlsx == 'bar.xlsx'
 
     def test_parse_args_opt(self):
         c = Config.getInstance()
         print(c)
-        c.parse_args(['--ssl-no-verify', 'fooo.yml','baar.xlsx'])
-        assert  c.args.yml == 'fooo.yml'
-        assert  c.args.xlsx == 'baar.xlsx'
-        assert  c.args.ssl_no_verify == False
+        c.parse_args(['--ssl-no-verify', 'fooo.yml', 'baar.xlsx'])
+        assert c.args.yml == 'fooo.yml'
+        assert c.args.xlsx == 'baar.xlsx'
+        assert c.args.ssl_no_verify is False
 
     def test_Config_isSingleton(self):
         c1 = Config.getInstance()
         c2 = Config.getInstance()
-        print(c1,c2)
+        print(c1, c2)
         assert c1 == c2
+
 
 class TestToolbox:
     def test_getLogger(self):

@@ -3,9 +3,9 @@
 
 import pandas as pd
 from datetime import datetime
-from xpathwebscrapper.webparser import *
+from xpathwebscrapper.webparser import Scrapper, XpthPattern, XpthParser
 from xpathwebscrapper.utils import Config
-import pkg_resources  # part of standart setuptools
+
 
 def main():
 
@@ -30,9 +30,9 @@ def scrap():
     c = Config.getInstance()
 
     patt = XpthPattern()
-    patt.setRowXpath(c.structure.get('data',{}).get('rows'))
-    patt.setXPathDataDict(c.structure.get('data',{}).get('columns',{}))
-    patt.setLinks(c.structure.get('data',{}).get('links',[]))
+    patt.setRowXpath(c.structure.get('data', {}).get('rows'))
+    patt.setXPathDataDict(c.structure.get('data', {}).get('columns', {}))
+    patt.setLinks(c.structure.get('data', {}).get('links', []))
 
     par = XpthParser(patt)
 

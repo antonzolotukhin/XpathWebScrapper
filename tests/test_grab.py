@@ -1,8 +1,4 @@
 import pytest
-
-import pandas as pd
-from datetime import datetime
-import yaml
 from xpathwebscrapper.grab import scrap
 from xpathwebscrapper.utils import Config
 
@@ -10,11 +6,12 @@ from xpathwebscrapper.utils import Config
 Poor test is better than none
 """
 
+
 @pytest.mark.httpretty
 def test_scrap_correct_df_data():
 
     c = Config.getInstance()
-    c.parse_args(['tests/resources/test.yml','test.xlsx'])
+    c.parse_args(['tests/resources/test.yml', 'test.xlsx'])
 
     df = scrap()
 

@@ -2,10 +2,10 @@
 import os
 import re
 from urllib.parse import urlparse
-import json
 import httpretty
 import pytest
 from xpathwebscrapper.utils import Config
+
 
 def request_callback_get(request, uri, headers):
     """
@@ -25,11 +25,11 @@ def get_from_file(uri):
     if os.path.exists(response_file):
         code = 200
         response = open(response_file, mode="r", encoding="utf-8-sig").read()
-        print (f'mock {response_file} 200')
+        print(f'mock {response_file} 200')
     else:
         code = 404
         response = '''"404": "Not Found"'''
-        print (f'mock {response_file} 404')
+        print(f'mock {response_file} 404')
     return code, response
 
 
@@ -44,8 +44,9 @@ def httpget_mock():
                                body=request_callback_get,
                                content_type="text/html")
 
+
 @pytest.fixture
 def inittestconfig():
     c = Config.getInstance()
     print(c)
-    c.parse_args(['tests/resources/test.yml','tests/resources/test.xlsx'])
+    c.parse_args(['tests/resources/test.yml', 'tests/resources/test.xlsx'])
