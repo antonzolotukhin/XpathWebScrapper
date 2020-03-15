@@ -9,11 +9,16 @@ before_script:
 cache:
   paths:
     - pip-cache
-test:
+pytest:
   stage: test
   script:
   - set -e
   - python setup.py test
+  artifacts:
+    reports:
+      junit: pytest_report.xml
+
+
 build:
   stage: build
   script:
