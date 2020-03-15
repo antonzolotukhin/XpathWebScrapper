@@ -3,6 +3,9 @@
 *.xls
 *.csv
 
+# pytest reports
+pytest_report.xml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
