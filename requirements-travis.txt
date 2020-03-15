@@ -3,3 +3,5 @@ pytest==3.1.2
 HTTPretty
 pytest_httpretty
 pytest-mock
+flake8
+coverage

@@ -9,6 +9,10 @@ before_script:
 cache:
   paths:
     - pip-cache
+lint:
+  stage: test
+  script:
+    - python setup.py flake8
 pytest:
   stage: test
   script:
