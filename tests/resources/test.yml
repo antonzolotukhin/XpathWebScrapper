@@ -3,8 +3,8 @@ starturl: "/wiki/Timeline_of_wars"
 data:
         rows:    "//table[contains(@class,\"wikitable\")]/tbody/tr[count(th)=0]"
         columns:
-                start: "td[1]"
-                finish: "td[2]"
+                start: "td[1]/text()"
+                finish: "td[2]/text()"
                 name: "td[3]"
                 vicpart: "td[4]"
                 defpart: "td[5]"
