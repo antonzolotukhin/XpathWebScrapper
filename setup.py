@@ -79,6 +79,7 @@ setup(
     tests_require=[  # необходимо перечислить ВСЕ библиотеки, которые должны быть установлены для запуска тестов
         "requests",
         "pytest",
+        "pytest-cov",
         "HTTPretty",
         "pytest-mock",
         "requests-mock",

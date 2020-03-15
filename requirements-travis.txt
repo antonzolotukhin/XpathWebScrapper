@@ -3,4 +3,4 @@ pytest
 requests-mock
 pytest-mock
 flake8
-coverage
+pytest-cov
