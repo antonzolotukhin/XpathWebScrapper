@@ -30,7 +30,22 @@ if "TRAVIS_BUILD_NUMBER" in os.environ and "TRAVIS_BRANCH" in os.environ:
         if "release" in os.environ["TRAVIS_BRANCH"] or os.environ["TRAVIS_BRANCH"] == "master"
         else devStatus
     )
+elif "GITLAB_CI" in os.environ:
 
+    print("This is GITLAB-CI build")
+    print("CI_PIPELINE_IID = {}".format(os.environ["CI_PIPELINE_IID"]))
+    print("CI_COMMIT_BRANCH = {}".format(os.environ["CI_COMMIT_BRANCH"]))
+
+    __version__ += ".{}{}".format(
+        "" if "release" in os.environ["CI_COMMIT_BRANCH"] or os.environ["CI_COMMIT_BRANCH"] == "master" else "dev",
+        os.environ["CI_PIPELINE_IID"],
+    )
+
+    devStatus = (
+        "5 - Production/Stable"
+        if "release" in os.environ["CI_COMMIT_BRANCH"] or os.environ["CI_COMMIT_BRANCH"] == "master"
+        else devStatus
+    )
 else:
     print("This is local build")
     __version__ += ".dev0"  # set version as major.minor.localbuild if local build: python setup.py install
