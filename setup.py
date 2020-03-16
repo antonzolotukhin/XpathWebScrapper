@@ -95,7 +95,6 @@ setup(
         "requests",
         "pytest",
         "pytest-cov",
-        "HTTPretty",
         "pytest-mock",
         "requests-mock",
     ],
